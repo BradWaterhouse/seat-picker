@@ -6,5 +6,5 @@ import App from './components/App/App';
 const anchor = document.getElementById("app");
 
 if (anchor) {
-  ReactDOM.render(<App name="Jane" />, anchor);
+  ReactDOM.render(<App />, anchor);
 }

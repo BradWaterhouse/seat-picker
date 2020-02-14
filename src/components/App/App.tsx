@@ -1,19 +1,96 @@
 import * as React from 'react'
-import { Button } from '../../styles/Button'
+import 'bulma';
+import Seat from "../Seat/Seat";
+import Summary from "../Summary/Summary";
+import seatingPlan from "./seatingPlan.json";
 
-interface Props {
-  name: string;
+const fs = require('fs');
+
+interface SeatInterface {
+    id: number,
+    reserved: boolean,
+    available: boolean,
+    selected: boolean
 }
 
-export default class App extends React.Component<Props, {}> {
-  render() {
-    return (
-      <div>
-        Hello {this.props.name}
+interface SeatAndRow {
+    row: string,
+    seat: SeatInterface[]
+}
 
-        <Button>Hi!</Button>
-        <Button primary>Hi!</Button>
-      </div>
-    );
-  }
+interface State {
+    seats: SeatAndRow[];
+    count: number;
+}
+
+export default class App extends React.Component<{}, State> {
+    constructor(props: {}) {
+        super(props);
+
+        this.state = {
+            seats: seatingPlan.data,
+            count: 0
+        };
+
+        this.handleSelected = this.handleSelected.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    render() {
+        return (
+            <div className="container">
+                <div className="column">
+                    <div className="content has-text-centered">
+                        <h1 className='title'>Seat Picker</h1>
+                    </div>
+                </div>
+                <div className='seatPicker'>
+                    {this.state.seats.map((seatAndRow: SeatAndRow) => {
+                        return (
+                            <>
+                                <div className="columns">
+                                    <p className="subtitle" style={{paddingTop: 20}}> {seatAndRow.row} - </p>
+                                    {seatAndRow.seat.map((seat: SeatInterface) => {
+                                        return (
+                                            <div className="column">
+                                                <Seat key={seat.id} seat={seat} row={seatAndRow.row}
+                                                      handleSelect={this.handleSelected}/>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </>
+                        )
+                    })}
+                </div>
+                <div className="columns">
+                    <div className="column">
+                        <Summary count={this.state.count} onSubmit={this.handleSubmit}/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    public handleSelected(row: string, id: number): void {
+        let newState = this.state.seats;
+
+        let rowIndex = newState.map((el) => el.row).indexOf(row);
+        let seatIndex = newState[rowIndex].seat.map((el) => el.id).indexOf(id);
+
+        newState[rowIndex].seat[seatIndex].selected = !newState[rowIndex].seat[seatIndex].selected;
+        let ticketCount = this.state.count;
+
+        if (newState[rowIndex].seat[seatIndex].selected) {
+            this.setState({count: ticketCount + 1})
+        } else {
+            this.setState({count: ticketCount - 1})
+        }
+
+        this.setState({seats: newState});
+    }
+
+    public handleSubmit(): void {
+        console.log('here')
+    }
 }
