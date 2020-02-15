@@ -18,7 +18,7 @@
         {
           "id": 3,
           "reserved": false,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
@@ -48,31 +48,31 @@
         {
           "id": 8,
           "reserved": false,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
           "id": 9,
           "reserved": false,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
           "id": 10,
           "reserved": false,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
           "id": 11,
           "reserved": false,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
           "id": 12,
           "reserved": true,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
@@ -173,7 +173,7 @@
         {
           "id": 8,
           "reserved": false,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
@@ -197,7 +197,7 @@
         {
           "id": 12,
           "reserved": false,
-          "available": true,
+          "available": false,
           "selected": false
         },
         {
