@@ -3,7 +3,7 @@ import 'bulma';
 import Seat from "../Seat/Seat";
 import Summary from "../Summary/Summary";
 //@ts-ignore
-import seatingPlan from "./seating_plan_created.json";
+import seatingPlan from "../../../seating_plan_created.json";
 
 interface SeatInterface {
     id: number,

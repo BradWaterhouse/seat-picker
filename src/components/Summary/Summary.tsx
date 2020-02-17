@@ -16,8 +16,8 @@ export default class Summary extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            toggled: false;
-        }
+            toggled: false
+        };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -44,7 +44,7 @@ export default class Summary extends React.Component<Props, State> {
                         <div className="field">
                             <label className="label">Name</label>
 
-                            <div className={"dropdown " + this.isToggled()} onClick={this.toggle}>
+                            <div className={"dropdown " + this.isToggled()} onClick={this.toggle} onBlur={this.toggle}>
                                 <div className="dropdown-trigger">
                                     <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
                                         <span>Select Performance </span>
@@ -56,20 +56,16 @@ export default class Summary extends React.Component<Props, State> {
                                 <div className="dropdown-menu" id="dropdown-menu" role="menu">
                                     <div className="dropdown-content">
                                         <a href="#" className="dropdown-item">
-                                            Dropdown item
+                                            Friday Night
                                         </a>
                                         <a className="dropdown-item">
-                                            Other dropdown item
+                                            Saturday Afternoon
                                         </a>
                                         <a href="#" className="dropdown-item">
-                                            Active dropdown item
+                                            Saturday night
                                         </a>
                                         <a href="#" className="dropdown-item">
-                                            Other dropdown item
-                                        </a>
-                                        <hr className="dropdown-divider"/>
-                                        <a href="#" className="dropdown-item">
-                                            With a divider
+                                            Sunday Afternoon
                                         </a>
                                     </div>
                                 </div>
