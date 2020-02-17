@@ -64,10 +64,8 @@ export default class Seat extends React.Component<Props, State> {
 
     private handleSelect(): void {
         if (this.props.seat.available) {
-            if (!this.props.seat.reserved) {
                 this.props.handleSelect(this.props.row, this.props.seat.id);
                 this.setState({selected: !this.state.selected})
             }
-        }
     }
 }

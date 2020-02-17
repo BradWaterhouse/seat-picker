@@ -82,7 +82,7 @@ export default class App extends React.Component<{}, State> {
 
         let ticketCount = this.state.count;
 
-        if (newState[rowIndex].seat[seatIndex].selected) {
+        if (newState[rowIndex].seat[seatIndex].reserved) {
             this.setState({count: ticketCount + 1})
         } else {
             this.setState({count: ticketCount - 1})
