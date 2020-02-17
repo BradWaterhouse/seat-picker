@@ -2,9 +2,8 @@ import * as React from 'react'
 import 'bulma';
 import Seat from "../Seat/Seat";
 import Summary from "../Summary/Summary";
+//@ts-ignore
 import seatingPlan from "./seatingPlan.json";
-
-const editJsonFile = require("edit-json-file");
 
 interface SeatInterface {
     id: number,
@@ -91,10 +90,15 @@ export default class App extends React.Component<{}, State> {
     }
 
     public handleSubmit(): void {
-        let file = editJsonFile(`./seatingPlan.json`);
-        file.set("data", this.state.seats);
-        file.save();
-
-        console.log('saved')
+        fetch('http://localhost:5000/api/save-json', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                json: this.state.seats
+            })
+        })
     }
 }
