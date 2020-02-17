@@ -41,7 +41,7 @@ export default class App extends React.Component<{}, State> {
             <div className="container">
                 <div className="column">
                     <div className="content has-text-centered">
-                        <h1 className='title'>Seat Picker</h1>
+                        <h1 className='title'>Dronfield Theatre Group Seat Picker</h1>
                     </div>
                 </div>
                 <div className='seatPicker'>
