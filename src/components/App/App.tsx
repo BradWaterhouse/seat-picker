@@ -4,7 +4,7 @@ import Seat from "../Seat/Seat";
 import Summary from "../Summary/Summary";
 import seatingPlan from "./seatingPlan.json";
 
-const fs = require('fs');
+const editJsonFile = require("edit-json-file");
 
 interface SeatInterface {
     id: number,
@@ -48,8 +48,8 @@ export default class App extends React.Component<{}, State> {
                     {this.state.seats.map((seatAndRow: SeatAndRow) => {
                         return (
                             <>
-                                <div className="columns">
-                                    <p className="subtitle" style={{paddingTop: 20}}> {seatAndRow.row} - </p>
+                                <div className="columns is-full-mobile">
+                                    <p className="subtitle" style={{paddingTop: 20}}> {seatAndRow.row} </p>
                                     {seatAndRow.seat.map((seat: SeatInterface) => {
                                         return (
                                             <div className="column">
@@ -91,6 +91,10 @@ export default class App extends React.Component<{}, State> {
     }
 
     public handleSubmit(): void {
-        console.log('here')
+        let file = editJsonFile(`./seatingPlan.json`);
+        file.set("data", this.state.seats);
+        file.save();
+
+        console.log('saved')
     }
 }

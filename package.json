@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "bulma": "^0.8.0",
+    "edit-json-file": "^1.4.0",
+    "fs": "^0.0.1-security",
+    "lint": "^0.7.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-swipe-card": "^0.1.4",

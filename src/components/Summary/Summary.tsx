@@ -4,12 +4,14 @@ import ReactTooltip from 'react-tooltip'
 
 interface Props {
   count: number;
-  onSubmit: Function
+  onSubmit: () => void;
 }
 
 export default class Summary extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     render() {
@@ -74,9 +76,13 @@ export default class Summary extends React.Component<Props, {}> {
                 </div>
 
                 <div className="control">
-                    <button className="button is-primary" onClick={this.props.onSubmit()}>Submit</button>
+                    <button className="button is-primary" onClick={this.props.onSubmit}>Submit</button>
                 </div>
             </>
         );
+    }
+
+    public handleSubmit(): void {
+        this.props.onSubmit()
     }
 }

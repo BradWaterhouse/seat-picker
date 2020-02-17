@@ -15,9 +15,17 @@ interface Props {
     handleSelect: (row: string, id: number) => void;
 }
 
-export default class Seat extends React.Component<Props, {}> {
+interface State {
+    selected: boolean
+}
+
+export default class Seat extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+
+        this.state = {
+            selected: false
+        };
 
         this.seatColourStatus = this.seatColourStatus.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
@@ -43,8 +51,8 @@ export default class Seat extends React.Component<Props, {}> {
             if (this.props.seat.reserved) {
                 colour = '#669999';
             }
-            else if (this.props.seat.selected) {
-                colour = '#998253';
+            else if (this.state.selected) {
+                colour = '#995854';
             }
             else {
                 colour = '#99ff99';
@@ -58,6 +66,7 @@ export default class Seat extends React.Component<Props, {}> {
         if (this.props.seat.available) {
             if (!this.props.seat.reserved) {
                 this.props.handleSelect(this.props.row, this.props.seat.id);
+                this.setState({selected: !this.state.selected})
             }
         }
     }
