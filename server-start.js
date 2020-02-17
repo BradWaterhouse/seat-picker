@@ -3,12 +3,15 @@ const bodyParser = require('body-parser');
 
 let fs = require('fs');
 
-let cors = require('cors');
-
 const app = express();
-app.use(cors());
 
 const port = process.env.PORT || 5000;
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "*");
+    next();
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,15 +21,15 @@ app.get('/api/hello', (req, res) => {
 });
 
 app.post('/api/save-json', (req, res) => {
-    console.log(req);
+    console.log(req.body);
     res.send(
-        `I received your POST request. This is what you sent me: ${req.body.json}`,
+        `I received your POST request. This is what you sent me: ${req.body}`,
     );
 
-    // fs.writeFile('newfile.txt', 'Learn Node FS module', function (err) {
-    //     if (err) throw err;
-    //     console.log('File is created successfully.');
-    // });
+    fs.writeFile('seating_plan_created.json', JSON.stringify(req.body), function (err) {
+        if (err) throw err;
+        console.log('File is created successfully.');
+    });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

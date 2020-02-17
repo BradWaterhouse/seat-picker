@@ -48,11 +48,11 @@ export default class Seat extends React.Component<Props, State> {
         let colour = 'white';
 
         if (this.props.seat.available) {
-            if (this.props.seat.reserved) {
-                colour = '#669999';
-            }
-            else if (this.state.selected) {
+            if (this.state.selected) {
                 colour = '#995854';
+            }
+            else if (this.props.seat.reserved) {
+                colour = '#669999';
             }
             else {
                 colour = '#99ff99';

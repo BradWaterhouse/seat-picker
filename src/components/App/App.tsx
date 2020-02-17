@@ -3,7 +3,7 @@ import 'bulma';
 import Seat from "../Seat/Seat";
 import Summary from "../Summary/Summary";
 //@ts-ignore
-import seatingPlan from "./seatingPlan.json";
+import seatingPlan from "./seating_plan_created.json";
 
 interface SeatInterface {
     id: number,
@@ -72,12 +72,14 @@ export default class App extends React.Component<{}, State> {
     }
 
     public handleSelected(row: string, id: number): void {
+        console.log(row, id);
         let newState = this.state.seats;
 
         let rowIndex = newState.map((el) => el.row).indexOf(row);
         let seatIndex = newState[rowIndex].seat.map((el) => el.id).indexOf(id);
 
-        newState[rowIndex].seat[seatIndex].selected = !newState[rowIndex].seat[seatIndex].selected;
+        newState[rowIndex].seat[seatIndex].reserved = !newState[rowIndex].seat[seatIndex].reserved;
+
         let ticketCount = this.state.count;
 
         if (newState[rowIndex].seat[seatIndex].selected) {
@@ -97,7 +99,7 @@ export default class App extends React.Component<{}, State> {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                json: this.state.seats
+                data: this.state.seats
             })
         })
     }

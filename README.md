@@ -10,6 +10,12 @@ To run in hot module reloading mode:
 npm start
 ```
 
+To start the Node JS server run:
+
+```sh
+npm start
+```
+
 To create a production build:
 
 ```sh
