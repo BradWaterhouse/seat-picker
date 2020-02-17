@@ -7,11 +7,21 @@ interface Props {
   onSubmit: () => void;
 }
 
-export default class Summary extends React.Component<Props, {}> {
+interface State {
+    toggled: boolean;
+}
+
+export default class Summary extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        this.state = {
+            toggled: false;
+        }
+
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.toggle = this.toggle.bind(this);
+        this.isToggled = this.isToggled.bind(this);
     }
 
     render() {
@@ -34,7 +44,7 @@ export default class Summary extends React.Component<Props, {}> {
                         <div className="field">
                             <label className="label">Name</label>
 
-                            <div className="dropdown">
+                            <div className={"dropdown " + this.isToggled()} onClick={this.toggle}>
                                 <div className="dropdown-trigger">
                                     <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
                                         <span>Select Performance </span>
@@ -121,5 +131,17 @@ export default class Summary extends React.Component<Props, {}> {
 
     public handleSubmit(): void {
         this.props.onSubmit()
+    }
+
+    public toggle(): void {
+        this.setState({ toggled: !this.state.toggled });
+    }
+
+    public isToggled(): string {
+        if (this.state.toggled) {
+            return 'is-active'
+        }
+
+        return ''
     }
 }
