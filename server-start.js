@@ -26,7 +26,7 @@ app.post('/api/save-json', (req, res) => {
         `I received your POST request. This is what you sent me: ${req.body}`,
     );
 
-    fs.writeFile('seating_plan_created.json', JSON.stringify(req.body), function (err) {
+    fs.writeFile(req.body.filename, JSON.stringify(req.body), function (err) {
         if (err) throw err;
         console.log('File is created successfully.');
     });

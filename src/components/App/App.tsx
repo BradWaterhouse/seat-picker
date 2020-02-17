@@ -3,7 +3,9 @@ import 'bulma';
 import Seat from "../Seat/Seat";
 import Summary from "../Summary/Summary";
 //@ts-ignore
-import seatingPlan from "../../../seating_plan_created.json";
+import seating_plan_friday_night from "../../../seating_plan_friday_night.json";
+//@ts-ignore
+import seating_plan_saturday_afternoon from "../../../seating_plan_saturday_afternoon.json";
 
 interface SeatInterface {
     id: number,
@@ -20,19 +22,53 @@ interface SeatAndRow {
 interface State {
     seats: SeatAndRow[];
     count: number;
+    fileName: string;
 }
+
+const seatingPlan: any = [
+    {
+        id: 1,
+        name: 'Friday Afternoon',
+        file: seating_plan_friday_night,
+        fileName: 'seating_plan_friday_night.json'
+
+    },
+    {
+        id: 2,
+        name: 'Saturday Afternoon',
+        file: seating_plan_saturday_afternoon,
+        fileName: 'seating_plan_saturday_afternoon.json'
+
+    },
+    {
+        id: 3,
+        name: 'Saturday Night',
+        file: seating_plan_friday_night,
+        fileName: 'seating_plan_saturday_afternoon.json'
+
+    },
+    {
+        id: 4,
+        name: 'Sunday Afternoon',
+        file: seating_plan_saturday_afternoon,
+        fileName: 'seating_plan_saturday_afternoon.json'
+
+    }
+];
 
 export default class App extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props);
 
         this.state = {
-            seats: seatingPlan.data,
-            count: 0
+            seats: seatingPlan[1].file.data,
+            count: 0,
+            fileName: seatingPlan[1].fileName
         };
 
         this.handleSelected = this.handleSelected.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSelectedPerformance = this.handleSelectedPerformance.bind(this);
     }
 
     render() {
@@ -64,7 +100,7 @@ export default class App extends React.Component<{}, State> {
                 </div>
                 <div className="columns">
                     <div className="column">
-                        <Summary count={this.state.count} onSubmit={this.handleSubmit}/>
+                        <Summary count={this.state.count} onSubmit={this.handleSubmit} days={seatingPlan} handleSelectedPerformance={this.handleSelectedPerformance} />
                     </div>
                 </div>
             </div>
@@ -72,7 +108,6 @@ export default class App extends React.Component<{}, State> {
     }
 
     public handleSelected(row: string, id: number): void {
-        console.log(row, id);
         let newState = this.state.seats;
 
         let rowIndex = newState.map((el) => el.row).indexOf(row);
@@ -99,8 +134,13 @@ export default class App extends React.Component<{}, State> {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                data: this.state.seats
+                data: this.state.seats,
+                filename: this.state.fileName
             })
         })
+    }
+
+    public handleSelectedPerformance(performance: any) :void {
+        this.setState({ seats: performance.file.data, fileName: performance.fileName });
     }
 }

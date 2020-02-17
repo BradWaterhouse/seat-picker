@@ -3,12 +3,22 @@ import * as React from 'react'
 import ReactTooltip from 'react-tooltip'
 
 interface Props {
-  count: number;
-  onSubmit: () => void;
+    count: number;
+    onSubmit: () => void;
+    days: any[];
+    handleSelectedPerformance: (selectedPerformance: SelectedPerformance) => void;
+}
+
+interface SelectedPerformance {
+    id: number;
+    name: string;
+    file: any;
+    fileName: string;
 }
 
 interface State {
     toggled: boolean;
+    selectedPerformance: SelectedPerformance;
 }
 
 export default class Summary extends React.Component<Props, State> {
@@ -16,12 +26,14 @@ export default class Summary extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            toggled: false
+            toggled: false,
+            selectedPerformance: this.props.days[1]
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.toggle = this.toggle.bind(this);
         this.isToggled = this.isToggled.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     render() {
@@ -44,10 +56,10 @@ export default class Summary extends React.Component<Props, State> {
                         <div className="field">
                             <label className="label">Name</label>
 
-                            <div className={"dropdown " + this.isToggled()} onClick={this.toggle} onBlur={this.toggle}>
+                            <div className={"dropdown " + this.isToggled()} onClick={this.toggle}>
                                 <div className="dropdown-trigger">
                                     <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                                        <span>Select Performance </span>
+                                        <span> {this.state.selectedPerformance.name} </span>
                                         <span className="icon is-small">
                                             <i className="fas fa-angle-down" aria-hidden="true"/>
                                          </span>
@@ -55,18 +67,18 @@ export default class Summary extends React.Component<Props, State> {
                                 </div>
                                 <div className="dropdown-menu" id="dropdown-menu" role="menu">
                                     <div className="dropdown-content">
-                                        <a href="#" className="dropdown-item">
-                                            Friday Night
-                                        </a>
-                                        <a className="dropdown-item">
-                                            Saturday Afternoon
-                                        </a>
-                                        <a href="#" className="dropdown-item">
-                                            Saturday night
-                                        </a>
-                                        <a href="#" className="dropdown-item">
-                                            Sunday Afternoon
-                                        </a>
+
+                                        {this.props.days.map(day => {
+                                            return (
+                                                <>
+                                                    <div className="day" onClick={this.handleSelect}>
+                                                        <a key={day.id} className="dropdown-item" data-id={day.id}>
+                                                            {day.name}
+                                                        </a>
+                                                    </div>
+                                                </>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +142,7 @@ export default class Summary extends React.Component<Props, State> {
     }
 
     public toggle(): void {
-        this.setState({ toggled: !this.state.toggled });
+        this.setState({toggled: !this.state.toggled});
     }
 
     public isToggled(): string {
@@ -139,5 +151,12 @@ export default class Summary extends React.Component<Props, State> {
         }
 
         return ''
+    }
+
+    public handleSelect(event: any): void {
+        const selectedId = event.target.dataset.id;
+
+        this.setState({selectedPerformance: this.props.days[parseInt(selectedId) - 1]});
+        this.props.handleSelectedPerformance(this.props.days[parseInt(selectedId) - 1]);
     }
 }
