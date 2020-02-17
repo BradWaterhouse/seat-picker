@@ -6,6 +6,10 @@ import Summary from "../Summary/Summary";
 import seating_plan_friday_night from "../../../seating_plan_friday_night.json";
 //@ts-ignore
 import seating_plan_saturday_afternoon from "../../../seating_plan_saturday_afternoon.json";
+//@ts-ignore
+import seating_plan_saturday_night from "../../../seating_plan_saturday_night.json";
+//@ts-ignore
+import seating_plan_sunday_afternoon from "../../../seating_plan_sunday_afternoon.json";
 
 interface SeatInterface {
     id: number,
@@ -43,15 +47,15 @@ const seatingPlan: any = [
     {
         id: 3,
         name: 'Saturday Night',
-        file: seating_plan_friday_night,
-        fileName: 'seating_plan_saturday_afternoon.json'
+        file: seating_plan_saturday_night,
+        fileName: 'seating_plan_saturday_night.json'
 
     },
     {
         id: 4,
         name: 'Sunday Afternoon',
-        file: seating_plan_saturday_afternoon,
-        fileName: 'seating_plan_saturday_afternoon.json'
+        file: seating_plan_sunday_afternoon,
+        fileName: 'seating_plan_sunday_afternoon.json'
 
     }
 ];
@@ -87,7 +91,7 @@ export default class App extends React.Component<{}, State> {
                                     <p className="subtitle" style={{paddingTop: 20}}> {seatAndRow.row} </p>
                                     {seatAndRow.seat.map((seat: SeatInterface) => {
                                         return (
-                                            <div className="column">
+                                            <div className="column" key={seat.id + seatAndRow.row}>
                                                 <Seat key={seat.id} seat={seat} row={seatAndRow.row}
                                                       handleSelect={this.handleSelected}/>
                                             </div>

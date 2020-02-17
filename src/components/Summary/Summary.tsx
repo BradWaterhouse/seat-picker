@@ -71,8 +71,8 @@ export default class Summary extends React.Component<Props, State> {
                                         {this.props.days.map(day => {
                                             return (
                                                 <>
-                                                    <div className="day" onClick={this.handleSelect}>
-                                                        <a key={day.id} className="dropdown-item" data-id={day.id}>
+                                                    <div key={day.id} className="day" onClick={this.handleSelect}>
+                                                        <a className="dropdown-item" data-id={day.id}>
                                                             {day.name}
                                                         </a>
                                                     </div>
@@ -137,8 +137,9 @@ export default class Summary extends React.Component<Props, State> {
         );
     }
 
-    public handleSubmit(): void {
-        this.props.onSubmit()
+    public handleSubmit(event: any): void {
+        this.props.onSubmit();
+        event.preventDefault();
     }
 
     public toggle(): void {
@@ -158,5 +159,7 @@ export default class Summary extends React.Component<Props, State> {
 
         this.setState({selectedPerformance: this.props.days[parseInt(selectedId) - 1]});
         this.props.handleSelectedPerformance(this.props.days[parseInt(selectedId) - 1]);
+
+        event.preventDefault();
     }
 }
