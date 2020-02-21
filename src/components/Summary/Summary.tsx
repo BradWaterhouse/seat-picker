@@ -1,108 +1,69 @@
 import * as React from 'react'
-// @ts-ignore
-import ReactTooltip from 'react-tooltip'
 
 interface Props {
     count: number;
     onSubmit: () => void;
-    days: any[];
-    handleSelectedPerformance: (selectedPerformance: SelectedPerformance) => void;
-}
-
-interface SelectedPerformance {
-    id: number;
-    name: string;
-    file: any;
-    fileName: string;
 }
 
 interface State {
-    toggled: boolean;
-    selectedPerformance: SelectedPerformance;
+    name: string,
+    email: string,
+    phone: string,
+    adultTickets: string,
+    consessionTickets: string
 }
 
 export default class Summary extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        this.handleSubmit = this.handleSubmit.bind(this);
+
         this.state = {
-            toggled: false,
-            selectedPerformance: this.props.days[1]
+            name: '',
+            email: '',
+            phone: '',
+            adultTickets: '0',
+            consessionTickets: '0'
         };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.toggle = this.toggle.bind(this);
-        this.isToggled = this.isToggled.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
-
     render() {
         return (
             <>
+                <div className="column is-two-thirds">
+                    <h1 className='title' style={{marginTop: 30}}>Summary</h1>
+                    <p className="subtitle">Selected Seats: {this.props.count}</p>
+                </div>
                 <div className="columns">
-                    <div className="column is-two-thirds">
-                        <h1 className='title' style={{marginTop: 45}}>Summary</h1>
-                        <p className="subtitle">Selected Seats: {this.props.count}</p>
+                    <div className="column">
                         <div className="field">
                             <label className="label">Name</label>
                             <div className="control">
-                                <input className="input" type="text" placeholder="e.g Alex Smith"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="column is-two-thirds" style={{marginLeft: 55}}>
-                        <h1 className='title' style={{marginTop: 45}}>Select Performance</h1>
-                        <p className='subtitle'>Use the dropdown</p>
-                        <div className="field">
-                            <label className="label">Name</label>
-
-                            <div className={"dropdown " + this.isToggled()} onClick={this.toggle}>
-                                <div className="dropdown-trigger">
-                                    <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                                        <span> {this.state.selectedPerformance.name} </span>
-                                        <span className="icon is-small">
-                                            <i className="fas fa-angle-down" aria-hidden="true"/>
-                                         </span>
-                                    </button>
-                                </div>
-                                <div className="dropdown-menu" id="dropdown-menu" role="menu">
-                                    <div className="dropdown-content">
-
-                                        {this.props.days.map(day => {
-                                            return (
-                                                <>
-                                                    <div key={day.id} className="day" onClick={this.handleSelect}>
-                                                        <a className="dropdown-item" data-id={day.id}>
-                                                            {day.name}
-                                                        </a>
-                                                    </div>
-                                                </>
-                                            )
-                                        })}
-                                    </div>
-                                </div>
+                                <input className="input" type="text" name="name" value={this.state.name} onChange={this.handleChange} placeholder="e.g Alex Smith"/>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="columns">
-                    <div className="column is-two-thirds">
+                    <div className="column">
                         <div className="field">
                             <label className="label">Email</label>
                             <div className="control">
-                                <input className="input" type="email" placeholder="e.g. alexsmith@gmail.com"/>
+                                <input className="input" type="email" name="email" value={this.state.email} onChange={this.handleChange} placeholder="e.g. alexsmith@gmail.com"/>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="columns">
-                    <div className="column is-one-third">
+                    <div className="column is-two-thirds">
                         <div className="field">
                             <label className="label">Phone Number</label>
                             <div className="control">
-                                <input className="input" type="phone" placeholder="e.g. 12345667"/>
+                                <input className="input" name="phone" value={this.state.phone} type="phone" onChange={this.handleChange} placeholder="e.g. 12345667"/>
                             </div>
                         </div>
                     </div>
@@ -113,7 +74,7 @@ export default class Summary extends React.Component<Props, State> {
                         <div className="field">
                             <label className="label">Adult Tickets</label>
                             <div className="control">
-                                <input className="input" type="number"/>
+                                <input className="input" name="adultTickets" value={this.state.adultTickets} onChange={this.handleChange} type="number" placeholder='1'/>
                             </div>
                         </div>
                     </div>
@@ -124,7 +85,7 @@ export default class Summary extends React.Component<Props, State> {
                         <div className="field">
                             <label className="label">Consessions Tickets</label>
                             <div className="control">
-                                <input className="input" type="number"/>
+                                <input className="input" name='consessionTickets' value={this.state.consessionTickets} onChange={this.handleChange} type="number" placeholder='1'/>
                             </div>
                         </div>
                     </div>
@@ -137,29 +98,15 @@ export default class Summary extends React.Component<Props, State> {
         );
     }
 
-    public handleSubmit(event: any): void {
+    private handleChange(event: any): void {
+        const target: HTMLInputElement = event.target as HTMLInputElement;
+
+        this.setState({[target.name]: target.value});
+
+        console.log(this.state);
+    }
+
+    public handleSubmit(): void {
         this.props.onSubmit();
-        event.preventDefault();
-    }
-
-    public toggle(): void {
-        this.setState({toggled: !this.state.toggled});
-    }
-
-    public isToggled(): string {
-        if (this.state.toggled) {
-            return 'is-active'
-        }
-
-        return ''
-    }
-
-    public handleSelect(event: any): void {
-        const selectedId = event.target.dataset.id;
-
-        this.setState({selectedPerformance: this.props.days[parseInt(selectedId) - 1]});
-        this.props.handleSelectedPerformance(this.props.days[parseInt(selectedId) - 1]);
-
-        event.preventDefault();
     }
 }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import 'bulma';
 import Seat from "../Seat/Seat";
-import Summary from "../Summary/Summary";
+import Selector from "../Selector/Selector";
 //@ts-ignore
 import seating_plan_friday_night from "../../../seating_plan_friday_night.json";
 //@ts-ignore
@@ -10,6 +10,7 @@ import seating_plan_saturday_afternoon from "../../../seating_plan_saturday_afte
 import seating_plan_saturday_night from "../../../seating_plan_saturday_night.json";
 //@ts-ignore
 import seating_plan_sunday_afternoon from "../../../seating_plan_sunday_afternoon.json";
+import Summary from "../Summary/Summary";
 
 interface SeatInterface {
     id: number,
@@ -65,14 +66,20 @@ export default class App extends React.Component<{}, State> {
         super(props);
 
         this.state = {
-            seats: seatingPlan[1].file.data,
+            seats: [],
             count: 0,
-            fileName: seatingPlan[1].fileName
+            fileName: ''
         };
 
         this.handleSelected = this.handleSelected.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSelectedPerformance = this.handleSelectedPerformance.bind(this);
+        this.updateSelectedSeatCount = this.updateSelectedSeatCount.bind(this);
+    }
+
+    componentDidMount(): void {
+        console.log('app rendered');
+        this.setState({ seats: seatingPlan[0].file.data, fileName: seatingPlan[0].fileName })
     }
 
     render() {
@@ -104,7 +111,10 @@ export default class App extends React.Component<{}, State> {
                 </div>
                 <div className="columns">
                     <div className="column">
-                        <Summary count={this.state.count} onSubmit={this.handleSubmit} days={seatingPlan} handleSelectedPerformance={this.handleSelectedPerformance} />
+                        <Summary count={this.state.count} onSubmit={this.handleSubmit} />
+                </div>
+                    <div className="column">
+                        <Selector count={this.state.count} days={seatingPlan} handleSelectedPerformance={this.handleSelectedPerformance} />
                     </div>
                 </div>
             </div>
@@ -119,6 +129,11 @@ export default class App extends React.Component<{}, State> {
 
         newState[rowIndex].seat[seatIndex].reserved = !newState[rowIndex].seat[seatIndex].reserved;
 
+        this.updateSelectedSeatCount(newState, rowIndex, seatIndex);
+        this.setState({seats: newState});
+    }
+
+    private updateSelectedSeatCount(newState: any, rowIndex: number, seatIndex: number) {
         let ticketCount = this.state.count;
 
         if (newState[rowIndex].seat[seatIndex].reserved) {
@@ -126,8 +141,6 @@ export default class App extends React.Component<{}, State> {
         } else {
             this.setState({count: ticketCount - 1})
         }
-
-        this.setState({seats: newState});
     }
 
     public handleSubmit(): void {
@@ -141,10 +154,10 @@ export default class App extends React.Component<{}, State> {
                 data: this.state.seats,
                 filename: this.state.fileName
             })
-        })
+        });
     }
 
-    public handleSelectedPerformance(performance: any) :void {
+    private handleSelectedPerformance(performance: any) :void {
         this.setState({ seats: performance.file.data, fileName: performance.fileName });
     }
 }
